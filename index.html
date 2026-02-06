@@ -110,6 +110,18 @@
       box-shadow: 0 12px 22px rgba(34,197,94,.35);
     }
 
+  startValentineCountdown(yesBtn.addEventListener("click", () => {
+  confettiBurst(1100);
+  result.style.display = "block";
+  startValentineCountdown();
+  yesBtn.disabled = true;
+  yesBtn.style.filter = "grayscale(.2)";
+  noBtn.style.display = "none";
+  window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+});
+
+
+
     #noBtn{
       background: linear-gradient(180deg, #fb7185, #ef4444);
       color:white;
@@ -171,15 +183,29 @@
       <button id="noBtn">Nein 😅</button>
     </div>
 
-    <section class="result" id="result">
-      <h2>Yesss! 😍</h2>
-      <img class="bigimg" src="us.jpg" alt="Us">
-      <p style="margin-top:12px; text-align:center; font-size:16px;">
-        Dann verbringen wir unseren Valentinstag zusammen 💞 Ich plane den perfekten Tag
-      </p>
-      <div class="tiny">PS: Der Nein-Button war etwas schüchtern (und Deko)</div>
-    </section>
-  </main>
+<section class="result" id="result">
+  <h2>Yesss! 😍</h2>
+
+  <img class="bigimg" src="us.jpg" alt="Us">
+
+  <p style="margin-top:12px; text-align:center; font-size:16px;">
+    Dann verbringen wir unseren Valentinstag zusammen 💞 Ich plane den perfekten Tag
+  </p>
+
+  <!-- 💘 COUNTDOWN -->
+  <div id="countdownBox" style="margin-top:16px; text-align:center;">
+    <h3 style="margin:6px 0;">💘 Valentine’s Day in:</h3>
+    <div id="countdownTimer" style="font-size:20px; font-weight:700;"></div>
+    <div style="margin-top:6px; font-size:13px; opacity:.75;">
+      Ja, ich zähle schon<br>
+    </div>
+  </div>
+
+  <div class="tiny">PS: Der Nein-Button war etwas schüchtern (und Deko)</div>
+</section>
+
+
+  
 
   <script>
     // --- CONFETTI ---
@@ -297,9 +323,41 @@
       window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
     });
 
+    function startValentineCountdown() {
+  const target = new Date();
+  target.setMonth(1); // Feb
+  target.setDate(14);
+  target.setHours(19, 0, 0, 0);
+
+  if (target.getTime() < Date.now()) {
+    target.setFullYear(target.getFullYear() + 1);
+  }
+
+  const timerEl = document.getElementById("countdownTimer");
+  if (!timerEl) return;
+
+  function tick() {
+    const diff = target - Date.now();
+    if (diff <= 0) {
+      timerEl.textContent = "RIGHT NOW 😌💘";
+      return;
+    }
+
+    const s = Math.floor(diff / 1000);
+    const days = Math.floor(s / 86400);
+    const hours = Math.floor((s % 86400) / 3600);
+    const mins = Math.floor((s % 3600) / 60);
+    const secs = s % 60;
+
+    timerEl.textContent = `${days} days ${hours} hours ${mins} minutes ${secs} seconds`;
+  }
+
+  tick();
+  setInterval(tick, 1000);
+}
+
+
     moveNoButton();
   </script>
 </body>
 </html>
-
-
